@@ -32,11 +32,6 @@ public class ProductoController {
     @Autowired
     private ProductoModelAssembler assembler;
 
-    @PostMapping
-    public ResponseEntity<Producto> crearProducto(@RequestBody Producto producto) {
-        return ResponseEntity.ok(productoService.crearProducto(producto));
-    }
-
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public CollectionModel<EntityModel<Producto>> getAllProductos() {
         List<EntityModel<Producto>> productos = productoService.listarProductos().stream()
