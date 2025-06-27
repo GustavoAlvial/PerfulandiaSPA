@@ -37,7 +37,7 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.crearProducto(producto));
     }
 
-    @GetMapping(produces = MediaTypes.HAL_JSON_VALUE, path = "")
+    @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public CollectionModel<EntityModel<Producto>> getAllProductos() {
         List<EntityModel<Producto>> productos = productoService.listarProductos().stream()
                 .map(assembler::toModel)
@@ -47,7 +47,7 @@ public class ProductoController {
                 linkTo(methodOn(ProductoController.class).getAllProductos()).withSelfRel());
     }
 
-    @GetMapping(path = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public EntityModel<Producto> getProductoById(@PathVariable Long id) {
         Producto producto = productoService.buscarProductoPorId(id)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
@@ -62,14 +62,14 @@ public class ProductoController {
                 .body(assembler.toModel(newProducto));
     }
 
-    @PutMapping(path = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<Producto>> updateProducto(@PathVariable Long id, @RequestBody Producto producto) {
         producto.setId(id);
         Producto updatedProducto = productoService.actualizarProducto(id, producto);
         return ResponseEntity.ok(assembler.toModel(updatedProducto));
     }
 
-    @DeleteMapping(path = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<?> deleteProducto(@PathVariable Long id) {
         productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
