@@ -26,7 +26,7 @@ public class ProductoService {
         return productoRepository.findById(id);
     }
 
-    public Producto actualizarProducto(Long id, Producto productoAct) {
+    public Producto actualizarProducto(long id, Producto productoAct) {
         return productoRepository.findById(id).map(producto -> {
             producto.setNombre(productoAct.getNombre());
             producto.setTipo(productoAct.getTipo());
