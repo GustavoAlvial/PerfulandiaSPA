@@ -1,11 +1,11 @@
 package com.perfulandiaspa.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,23 +13,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Getter
 @Setter
-@Table(name = "producto")
-@Entity
-public class Producto {
+@Builder
+public class Inventario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nombre;
-    private String tipo; //edp, edt
-    private Double precio;
-    private int mililitros;
-    private int stock;
-    @Column(unique = true)
-    private String codigo;
+
+    @NotNull(message = "El ID del producto es obligatorio.")
+    private Long productoId;
+
+    @NotNull(message = "La cantidad es obligatoria.")
+    @PositiveOrZero(message = "La cantidad no puede ser negativa.")
+    private Integer cantidad;
 }
