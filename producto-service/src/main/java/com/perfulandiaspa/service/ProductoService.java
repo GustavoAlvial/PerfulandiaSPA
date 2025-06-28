@@ -22,8 +22,8 @@ public class ProductoService {
         return productoRepository.findAll();
     }
 
-    public Optional<Producto> buscarProductoPorId(Long id) {
-        return productoRepository.findById(id);
+    public Producto buscarProductoPorId(Long id) {
+        return productoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
     }
 
     public Producto actualizarProducto(long id, Producto productoAct) {
