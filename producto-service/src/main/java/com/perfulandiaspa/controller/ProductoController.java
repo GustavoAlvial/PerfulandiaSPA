@@ -44,8 +44,7 @@ public class ProductoController {
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public EntityModel<Producto> getProductoById(@PathVariable Long id) {
-        Producto producto = productoService.buscarProductoPorId(id)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        Producto producto = productoService.buscarProductoPorId(id);
         return assembler.toModel(producto);
     }
 

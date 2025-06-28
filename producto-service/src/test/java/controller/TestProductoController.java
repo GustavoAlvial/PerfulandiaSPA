@@ -84,7 +84,7 @@ public class TestProductoController {
 
     @Test
     public void testGetProductoById() throws Exception {
-        when(productoService.buscarProductoPorId(1L)).thenReturn(java.util.Optional.of(producto));
+        when(productoService.buscarProductoPorId(1L)).thenReturn((producto));
         mockMvc.perform(get("/api/productos/1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
