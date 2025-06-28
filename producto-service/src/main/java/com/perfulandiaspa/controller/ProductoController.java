@@ -22,8 +22,12 @@ import com.perfulandiaspa.assemblers.ProductoModelAssembler;
 import com.perfulandiaspa.model.Producto;
 import com.perfulandiaspa.service.ProductoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/productos")
+@Tag(name = "Productos", description = "Operaciones relacionadas con productos")
 public class ProductoController {
 
     @Autowired
@@ -32,6 +36,7 @@ public class ProductoController {
     @Autowired
     private ProductoModelAssembler assembler;
 
+    @Operation(summary = "Obtener todos los productos", description = "Devuelve una lista de todos los productos disponibles.")
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public CollectionModel<EntityModel<Producto>> getAllProductos() {
         List<EntityModel<Producto>> productos = productoService.listarProductos().stream()
@@ -42,12 +47,14 @@ public class ProductoController {
                 linkTo(methodOn(ProductoController.class).getAllProductos()).withSelfRel());
     }
 
+    @Operation(summary = "Obtener producto por ID", description = "Devuelve un producto específico por su ID.")
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public EntityModel<Producto> getProductoById(@PathVariable Long id) {
         Producto producto = productoService.buscarProductoPorId(id);
         return assembler.toModel(producto);
     }
 
+    @Operation(summary = "Crear un nuevo producto", description = "Crea un nuevo producto.")
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<Producto>> createProducto(@RequestBody Producto producto) {
         Producto newProducto = productoService.crearProducto(producto);
@@ -56,6 +63,7 @@ public class ProductoController {
                 .body(assembler.toModel(newProducto));
     }
 
+    @Operation(summary = "Actualizar un producto", description = "Actualiza un producto existente.")
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<Producto>> updateProducto(@PathVariable Long id, @RequestBody Producto producto) {
         producto.setId(id);
@@ -63,6 +71,7 @@ public class ProductoController {
         return ResponseEntity.ok(assembler.toModel(updatedProducto));
     }
 
+    @Operation(summary = "Eliminar un producto", description = "Elimina un producto por su ID.")
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<?> deleteProducto(@PathVariable Long id) {
         productoService.eliminarProducto(id);
