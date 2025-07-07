@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,20 +15,16 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.perfulandiaspa.model.Producto;
 import com.perfulandiaspa.repository.ProductoRepository;
 
 import net.datafaker.Faker;
 
-@SpringBootTest(classes = ProductoService.class)
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 public class TestProductoService {
     @InjectMocks
-    @Autowired
     private ProductoService productoService;
     
     @Mock
@@ -76,7 +73,7 @@ public class TestProductoService {
 
     @Test
     public void testBuscarProductoPorId() {
-        Producto producto = Producto.builder().id(faker.number().randomNumber(6))
+        Producto producto = Producto.builder().id(1L)
                 .nombre(faker.commerce().productName())
                 .tipo("EDP")
                 .precio(faker.number().randomDouble(2, 10000, 100000))
