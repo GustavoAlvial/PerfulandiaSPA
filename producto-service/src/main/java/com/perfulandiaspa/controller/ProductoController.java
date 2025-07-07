@@ -55,7 +55,7 @@ public class ProductoController {
     }
 
     @Operation(summary = "Crear un nuevo producto", description = "Crea un nuevo producto.")
-    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE, consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EntityModel<Producto>> createProducto(@RequestBody Producto producto) {
         Producto newProducto = productoService.crearProducto(producto);
         return ResponseEntity
@@ -64,7 +64,7 @@ public class ProductoController {
     }
 
     @Operation(summary = "Actualizar un producto", description = "Actualiza un producto existente.")
-    @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE, consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EntityModel<Producto>> updateProducto(@PathVariable Long id, @RequestBody Producto producto) {
         producto.setId(id);
         Producto updatedProducto = productoService.actualizarProducto(id, producto);
@@ -76,6 +76,18 @@ public class ProductoController {
     public ResponseEntity<?> deleteProducto(@PathVariable Long id) {
         productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(value = "{id}/similares", produces = MediaTypes.HAL_JSON_VALUE)
+    public CollectionModel<EntityModel<Producto>> getProductosSimilares(@PathVariable Long id) {
+        Producto producto = productoService.buscarProductoPorId(id);
+        List<Producto> similares = productoService.obtenerProductosSimilares(producto.getTipo(), id);
+        List<EntityModel<Producto>> productosSimilares = similares.stream()
+                .map(assembler::toModel)
+                .collect(Collectors.toList());
+
+        return CollectionModel.of(productosSimilares,
+                linkTo(methodOn(ProductoController.class).getProductosSimilares(id)).withSelfRel());
     }
 
 }
