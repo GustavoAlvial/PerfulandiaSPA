@@ -11,10 +11,13 @@ import com.perfulandiaspa.model.Producto;
 
 @Component
 public class ProductoModelAssembler implements RepresentationModelAssembler <Producto, EntityModel<Producto>>{
+    @SuppressWarnings("null")
     @Override
     public EntityModel<Producto> toModel(Producto producto) {
         return EntityModel.of(producto,
-        linkTo(methodOn(ProductoController.class).getProductoById(producto.getId())).withSelfRel(),
-        linkTo(methodOn(ProductoController.class).getAllProductos()).withRel("productos"));
+            linkTo(methodOn(ProductoController.class).getProductoById(producto.getId())).withSelfRel(),
+            linkTo(methodOn(ProductoController.class).getAllProductos()).withRel("productos"),
+            linkTo(methodOn(ProductoController.class).getProductosSimilares(producto.getId())).withRel("similares")
+        );
     }
 }

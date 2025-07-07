@@ -13,14 +13,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Table(name = "producto")
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Getter
 @Setter
-@Table(name = "producto")
-@Entity
+@Builder
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

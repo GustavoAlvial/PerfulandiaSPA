@@ -40,5 +40,9 @@ public class ProductoService {
     public void eliminarProducto(Long id) {
         productoRepository.deleteById(id);
     }
+
+    public List<Producto> obtenerProductosSimilares(String tipo, Long id) {
+        return productoRepository.findByTipoAndIdNot(tipo, id);
+    }
 }
 
