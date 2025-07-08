@@ -129,4 +129,20 @@ public class TestProductoController {
                 .andExpect(status().isNoContent());
         verify(productoService, times(1)).eliminarProducto(1L);
     }
+
+    @Test
+    public void testGetProductosSimilares() throws Exception {
+        when(productoService.buscarProductoPorId(1L)).thenReturn(producto);
+        when(productoService.obtenerProductosSimilares("EDP", 1L)).thenReturn(List.of(producto));
+        mockMvc.perform(get("/api/productos/1/similares")
+                .accept(MediaTypes.HAL_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.productoList[0].id").value(producto.getId()))
+                .andExpect(jsonPath("$._embedded.productoList[0].nombre").value(producto.getNombre()))
+                .andExpect(jsonPath("$._embedded.productoList[0].tipo").value(producto.getTipo()))
+                .andExpect(jsonPath("$._embedded.productoList[0].precio").value(producto.getPrecio()))
+                .andExpect(jsonPath("$._embedded.productoList[0].mililitros").value(producto.getMililitros()))
+                .andExpect(jsonPath("$._embedded.productoList[0].stock").value(producto.getStock()))
+                .andExpect(jsonPath("$._embedded.productoList[0].codigo").value(producto.getCodigo()));
+    }
 }

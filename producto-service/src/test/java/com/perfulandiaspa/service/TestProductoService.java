@@ -97,5 +97,25 @@ public class TestProductoService {
         productoService.eliminarProducto(id);
         verify(productoRepository, times(1)).deleteById(id);
     }
+
+    @Test
+    public void testObtenerProductosSimilares() {
+        Producto producto = Producto.builder().id(1L)
+                .nombre(faker.commerce().productName())
+                .tipo("EDP")
+                .precio(faker.number().randomDouble(2, 10000, 100000))
+                .mililitros(faker.number().numberBetween(30, 200))
+                .stock(faker.number().numberBetween(0, 100))
+                .codigo(faker.code().ean8())
+                .build();
+        String tipo = "EDP";
+        Long id = 1L;
+        when(productoRepository.findByTipoAndIdNot(tipo, id)).thenReturn(List.of(producto));
+
+        List<Producto> productosSimilares = productoService.obtenerProductosSimilares(tipo, id);
+        assertNotNull(productosSimilares);
+        assertEquals(1, productosSimilares.size());
+        assertEquals(producto.getId(), productosSimilares.get(0).getId());
+    }
     
 }
