@@ -78,6 +78,7 @@ public class ProductoController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Obtener productos similares", description = "Devuelve una lista de productos similares basados en el tipo del producto.")
     @GetMapping(value = "{id}/similares", produces = MediaTypes.HAL_JSON_VALUE)
     public CollectionModel<EntityModel<Producto>> getProductosSimilares(@PathVariable Long id) {
         Producto producto = productoService.buscarProductoPorId(id);
